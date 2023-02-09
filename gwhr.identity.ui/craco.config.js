@@ -72,7 +72,8 @@ module.exports = {
                     resolvePackage('./gwhr.identity.ui'),
                     resolvePackage('../gwhr.identity.ui.components'),
                     resolvePackage('../gwhr.identity.shared.dtos'),
-                    resolvePackage('../gwhr.identity.shared.client')
+                    resolvePackage('../gwhr.identity.shared.client'),
+                    resolvePackage('../gwhr.bcl.shared')
                     // resolvePackage('node_modules/another-package-to-transpile'),
                 ],
             },

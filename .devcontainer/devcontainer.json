@@ -1,6 +1,6 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
-    "name": "Boom Weave Devlopment",
+    "name": "GWHR Identity Devlopment",
     "dockerComposeFile": [
         "docker-compose.yml"
     ],
