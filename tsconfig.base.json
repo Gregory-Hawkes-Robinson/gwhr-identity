@@ -1,21 +1,32 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "target": "es2016", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+        "lib": [
+            "ES2021"
+        ], /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+        "module": "commonjs", /* Specify what module code is generated. */
+        "sourceMap": true, /* Create source map files for emitted JavaScript files. */
+        "allowSyntheticDefaultImports": true, /* Allow 'import x from y' when a module doesn't have a default export. */
+        "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+        "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
+        /* Type Checking */
+        "strict": true, /* Enable all strict type-checking options. */
+        "noImplicitAny": true, /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+        "strictNullChecks": true, /* When type checking, take into account 'null' and 'undefined'. */
+        "strictFunctionTypes": true, /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+        "strictPropertyInitialization": true, /* Check for class properties that are declared but not set in the constructor. */
+        "noUnusedLocals": true, /* Enable error reporting when local variables aren't read. */
+        "noUnusedParameters": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
+        "noFallthroughCasesInSwitch": true, /* Enable error reporting for fallthrough cases in switch statements. */
+        "noImplicitOverride": true, /* Ensure overriding members in derived classes are marked with an override modifier. */
+        "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+        "composite": true,
         "baseUrl": ".",
         "declaration": true,
-        "target": "es6",
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noFallthroughCasesInSwitch": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "composite": true,
-        "sourceMap": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true
+        "resolveJsonModule": true
     }
 }

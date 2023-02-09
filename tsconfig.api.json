@@ -1,5 +1,4 @@
 {
-    "extends": "../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": "../"
     },
@@ -16,7 +15,6 @@
     ],
     "include": [
         "src/**/*",
-        "../gwhr.identity.api.data/src/**/*",
         "../ghwr.identity.shared.models/src/**/*",
         "../ghwr.identity.shared.dtos/src/**/*",
         "../ghwr.identity.api.data/src/**/*"

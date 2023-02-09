@@ -3,10 +3,14 @@
     "references": [
         {
             "path": "../gwhr.identity.shared.models"
+        },
+        {
+            "path": "../gwhr.identity.shared.dtos"
         }
     ],
     "include": [
         "src/**/*",
-        "../gwhr.identity.shared.models/src/**/*"
+        "../gwhr.identity.shared.models/src/**/*",
+        "../gwhr.identity.shared.dtos/src/**/*"
     ]
 }
