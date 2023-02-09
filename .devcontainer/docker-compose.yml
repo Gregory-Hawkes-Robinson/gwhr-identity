@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5838:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+  api:
+    build: .
+    working_dir: /workspace
+    volumes:
+      - ..:/workspace:cached
+    ports:
+      - "5001:5001"
+    environment:
+      - BW_ENV=localhost
+      - WEBSITES_PORT=5001
+    command: sleep infinity
+    depends_on:
+      - db

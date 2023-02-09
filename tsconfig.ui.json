@@ -1,0 +1,17 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "./gwhr.identity.shared.dtos"
+        },
+        {
+            "path": "./gwhr.identity.shared.client"
+        },
+        {
+            "path": "./gwhr.identity.ui.components"
+        },
+        {
+            "path": "./gwhr.identity.ui"
+        }
+    ]
+}

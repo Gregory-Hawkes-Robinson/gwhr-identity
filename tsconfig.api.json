@@ -1,0 +1,24 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "rootDir": "../"
+    },
+    "references": [
+        {
+            "path": "../ghwr.identity.shared.models"
+        },
+        {
+            "path": "../ghwr.identity.shared.dtos"
+        },
+        {
+            "path": "../ghwr.identity.api.data"
+        }
+    ],
+    "include": [
+        "src/**/*",
+        "../gwhr.identity.api.data/src/**/*",
+        "../ghwr.identity.shared.models/src/**/*",
+        "../ghwr.identity.shared.dtos/src/**/*",
+        "../ghwr.identity.api.data/src/**/*"
+    ]
+}

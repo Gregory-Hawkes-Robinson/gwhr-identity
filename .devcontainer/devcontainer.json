@@ -1,0 +1,18 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+    "name": "Boom Weave Devlopment",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    // The name of the following service has to match one of the services in docker-compose.yml
+    "service": "api",
+    "workspaceFolder": "/workspace",
+    "extensions": [
+        "rangav.vscode-thunder-client",
+        "gwhrengineering.gwhr",
+        "antfu.file-nesting",
+        "holazz.vsc-reveal"
+    ],
+    "shutdownAction": "stopCompose",
+    "remoteUser": "node"
+}
