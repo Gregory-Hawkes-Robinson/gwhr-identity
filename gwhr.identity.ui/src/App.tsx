@@ -24,11 +24,17 @@ export class App extends React.Component {
         <InputControl value='greg'
           label='Username'
           isReadOnly={false}
-          validator={(value: string) => { return value.length > 0 }}></InputControl>
+          validator={(value: string) => { return value.length > 0 }}
+          onChange={(value: string) => {
+            console.log("value is:", value);
+          }}></InputControl>
         <InputControl value='greg'
           label='Password'
           isReadOnly={false}
-          validator={(value: string) => { return value.length > 0 }}></InputControl>
+          validator={(value: string) => { return value.length > 0 }}
+          onChange={(value: string) => {
+            console.log("value is:", value);
+          }}></InputControl>
       </div>
     );
   }
