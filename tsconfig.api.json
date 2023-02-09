@@ -4,19 +4,19 @@
     },
     "references": [
         {
-            "path": "../ghwr.identity.shared.models"
+            "path": "../gwhr.identity.shared.models"
         },
         {
-            "path": "../ghwr.identity.shared.dtos"
+            "path": "../gwhr.identity.shared.dtos"
         },
         {
-            "path": "../ghwr.identity.api.data"
+            "path": "../gwhr.identity.api.data"
         }
     ],
     "include": [
         "src/**/*",
-        "../ghwr.identity.shared.models/src/**/*",
-        "../ghwr.identity.shared.dtos/src/**/*",
-        "../ghwr.identity.api.data/src/**/*"
+        "../gwhr.identity.shared.models/src/**/*",
+        "../gwhr.identity.shared.dtos/src/**/*",
+        "../gwhr.identity.api.data/src/**/*"
     ]
 }

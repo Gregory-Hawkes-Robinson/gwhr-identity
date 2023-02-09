@@ -2,7 +2,7 @@
     "extends": "../tsconfig.base.json",
     "references": [
         {
-            "path": "../gwhr.identity.shared.models"
+            "path": "../gwhr.identity.shared.dtos"
         }
     ],
     "include": [

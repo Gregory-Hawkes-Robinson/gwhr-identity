@@ -73,9 +73,6 @@ module.exports = {
                     resolvePackage('../gwhr.identity.ui.components'),
                     resolvePackage('../gwhr.identity.shared.dtos'),
                     resolvePackage('../gwhr.identity.shared.client')
-                    // resolvePackage('../boomerang.returns.react.shared.viewmodels'),
-                    // resolvePackage('../../../shared/boomerang.returns.shared.dtos'),
-                    // resolvePackage('../boomerang.returns.react.shared.connectors')
                     // resolvePackage('node_modules/another-package-to-transpile'),
                 ],
             },
