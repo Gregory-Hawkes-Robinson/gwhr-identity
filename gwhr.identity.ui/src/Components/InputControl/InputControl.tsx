@@ -20,17 +20,6 @@ export class InputControl extends React.Component<IInputControlProps, IInputCont
         super(props);
         this.state = { value: props.value, isFocused: false };
     }
-    /*
-    export class BrTermsViewPrivate extends React.Component<IBrTermsViewProps, IBrTermsViewState> {
-    constructor(props: IBrTermsViewProps) {
-        super(props);
-
-        //#region Initial State
-        this.state = {}
-        //#endregion
-    }
-
-     */
 
     //#region Properties
 
@@ -51,9 +40,6 @@ export class InputControl extends React.Component<IInputControlProps, IInputCont
     // #region Methods
 
     public override render(): JSX.Element {
-        console.log("this:", this);
-        console.log(this.props.label);
-        console.log(this.state.value);
         return InputControlRenderer.render(this);
     }
 

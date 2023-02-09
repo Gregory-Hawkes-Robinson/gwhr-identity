@@ -7,11 +7,8 @@ export class App extends React.Component {
   public override render(): JSX.Element {
     return (
       <div className="App">
+
         <header className="App-header">
-          <InputControl value='greg'
-            label='Username'
-            isReadOnly={false}
-            validator={(value: string) => { return value.length > 0 }}></InputControl>
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.tsx</code> and save to reload.
@@ -24,6 +21,14 @@ export class App extends React.Component {
             Learn React
           </a>
         </header>
+        <InputControl value='greg'
+          label='Username'
+          isReadOnly={false}
+          validator={(value: string) => { return value.length > 0 }}></InputControl>
+        <InputControl value='greg'
+          label='Password'
+          isReadOnly={false}
+          validator={(value: string) => { return value.length > 0 }}></InputControl>
       </div>
     );
   }

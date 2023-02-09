@@ -1,0 +1,58 @@
+.GwInputControl {
+    // display: grid;
+    // grid-auto-rows: auto;
+    // background-color: palegreen;
+    position: relative;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    overflow: hidden;
+
+    &.not-empty {
+        .label {
+            // color: lightgray;
+            //margin-bottom: 24px;
+            //top: 0;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        input {
+            color: rgba($color: #000000, $alpha: 1.0);
+        }
+    }
+
+    .label {
+        position: relative;
+        z-index: 0;
+        position: absolute;
+        bottom: 8px;
+        display: block;
+        font-size: 24px;
+        margin: 0;
+        padding: 0;
+        color: black;
+        transition: margin 0.25s ease-out;
+        color: rgba(0, 0, 0, 0.54);
+         width: 100%;
+    }
+
+    input {
+        position: relative;
+        z-index: 2;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid rgba($color: #000000, $alpha: 0.54);
+        margin-top: 24px;
+        font-size: 24px;
+        outline: none;
+        width: 100%;
+        max-width: 320px;
+        padding-bottom: 4px;
+
+        &:focus {
+            border-color: blue;
+        }
+    }
+}
