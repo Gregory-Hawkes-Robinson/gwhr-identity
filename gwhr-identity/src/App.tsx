@@ -36,7 +36,7 @@ function App() {
             </Route>
           </Route>
         </Routes> */}
-        <VirtualListControl items={items} rowHeight={50}></VirtualListControl>
+        <VirtualListControl items={items} rowHeight={200}></VirtualListControl>
       </div>
     </>
   )
