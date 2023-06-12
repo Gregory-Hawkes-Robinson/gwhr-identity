@@ -1,0 +1,85 @@
+@import '../../Styles/Colors';
+
+.GhTextInputControl {
+    // display: grid;
+    //  grid-auto-rows: auto;
+    // background-color: palegreen;
+    position: relative;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+
+    &.not-empty {
+        .input-container {
+            .label {
+                margin-bottom: 28px;
+                font-size: 16px;
+            }
+
+            input {
+                color: rgba($color: #000000, $alpha: 1.0);
+            }
+        }
+    }
+
+    .input-container {
+        position: relative;
+
+        input {
+            position: relative;
+            z-index: 2;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid $color-gray-dark;
+            margin-top: 24px;
+            font-size: 20px;
+            outline: none;
+            width: 100%;
+            max-width: 320px;
+            padding-bottom: 3px;
+
+            &:focus {
+                border-color: $color-blue;
+            }
+
+            &.invalid {
+                border-color: $color-red;
+
+                &:focus {
+                    border-color: $color-blue;
+                }
+            }
+        }
+
+        .label {
+            position: relative;
+            z-index: 0;
+            position: absolute;
+            bottom: 4px;
+            display: block;
+            font-size: 20px;
+            margin: 0;
+            padding: 0;
+            //  margin-top: -16px;
+            // padding-bottom: 15px;
+            color: $color-black;
+            transition: margin 0.25s ease-out;
+            color: rgba(0, 0, 0, 0.54);
+            width: 100%;
+        }
+    }
+
+    .error-label {
+        font-size: 14px;
+        display: block;
+        visibility: hidden;
+        // padding-top: 8px;
+        color: $color-red;
+
+        &.visible {
+            visibility: visible;
+        }
+    }
+}

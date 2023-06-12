@@ -1,0 +1,59 @@
+@import '../../Styles/Colors';
+
+.GhNotificationControl {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    width: 800px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+
+
+    .status-container {
+
+        width: 79px;
+
+        &.info {
+            background-color: $color-blue;
+        }
+
+        &.success {
+            //
+        }
+
+        &.warning {
+            //
+        }
+
+        &.error {
+            //
+        }
+    }
+
+    .text-container {
+        padding: 12px;
+
+        span {
+            display: block;
+        }
+
+        .name {
+            font-size: 24px;
+            color: $color-black;
+            font-weight: bold;
+        }
+
+        .description {
+            margin-top: 8px;
+            color: $color-gray-dark;
+        }
+    }
+
+    .actions-container {
+        //
+    }
+}

@@ -12,7 +12,7 @@ RUN apt-get install -y \
     curl \
     nano
     
-RUN npm install -g typescript
+RUN npm install -g typescript@latest
 
 # RUN git config user.name "Gregory Hawkes-Robinson"
 # RUN git config user.email "greg@boomreturns.com"

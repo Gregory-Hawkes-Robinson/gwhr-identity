@@ -1,0 +1,35 @@
+.virtual-list-control {
+    position: relative;
+    height: 100%;
+    background-color: beige;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    .scroll-slug {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 400px;
+    }
+
+    .items-container {
+        //  height: 3000px;
+        position: absolute;
+        top: 0;
+
+        .item {
+            position: relative;
+            width: 400px;
+            position: relative;
+            height: 200px;
+            background-color: aqua;
+            margin: 2px;
+            color: black;
+        }
+    }
+}

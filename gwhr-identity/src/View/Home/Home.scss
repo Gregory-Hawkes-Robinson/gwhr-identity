@@ -1,0 +1,36 @@
+@import "../../Styles/Colors.scss";
+
+.home {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 100%;
+    background-color: white;
+
+    nav {
+        // background-color: blueviolet;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        // border-right: 1px solid $gray3;
+        background-color: white;
+        margin: 8px;
+        border-right: 1px solid $gray5;
+
+        a {
+            // padding-left: 16px;
+            // padding-right: 16px;
+            padding: 8px;
+            display: block;
+            text-decoration: none;
+            color: $grayD5;
+            // position: relative;
+            // margin-bottom: 50%;
+            // transform-origin: 50%,50%;
+            // transform: rotate(90deg);
+        }
+
+        .active {
+            background-color: $gray5;
+        }
+    }
+
+}

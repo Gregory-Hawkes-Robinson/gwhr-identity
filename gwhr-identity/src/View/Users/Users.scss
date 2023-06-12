@@ -1,0 +1,18 @@
+@import "../../Styles/Colors.scss";
+
+.users-view {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 100%;
+    overflow: hidden;
+
+    .master {
+        // width: 400px;
+        background-color: white;
+        border-right: 1px solid $gray5;
+    }
+
+    .detail {
+        background-color: white;
+    }
+}

@@ -1,0 +1,34 @@
+@import "../../Styles/Colors.scss";
+
+.user-view {
+    nav {
+        // background-color: blueviolet;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        // border-right: 1px solid $gray3;
+        background-color: white;
+        margin: 8px;
+        border-radius: 8px;
+        border-right: none;
+
+        a {
+            // padding-left: 16px;
+            // padding-right: 16px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-bottom: 2;
+            display: inline-block;
+            text-decoration: none;
+            background-color: transparent;
+            // position: relative;
+            // margin-bottom: 50%;
+            // transform-origin: 50%,50%;
+            // transform: rotate(90deg);
+        }
+
+        .active {
+            border-bottom: 1px solid black;
+            background-color: transparent;
+        }
+    }
+}
