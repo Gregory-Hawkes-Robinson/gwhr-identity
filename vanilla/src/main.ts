@@ -20,7 +20,7 @@ import { VirtualListControl } from './VirtualListControl/VirtualListControl.ts'
 // `
 function addList(): void {
   const items: number[] = [];
-  for (let i: number = 0; i < 300; i++) {
+  for (let i: number = 0; i < 900; i++) {
     items.push(i);
   }
   new VirtualListControl(items);

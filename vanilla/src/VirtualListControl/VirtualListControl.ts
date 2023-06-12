@@ -8,7 +8,6 @@ export class VirtualListControl {
     private readonly _rowHeight: number = 200;
 
     private readonly _items: number[] = [];
-    private prevStartIdx: number = 0;
 
     constructor(items: number[]) {
         this._items = items;
@@ -16,14 +15,8 @@ export class VirtualListControl {
     }
 
     private drawRows(index: number): void {
-        if (index == this.prevStartIdx) {
-            this.prevStartIdx = index;
-            return;
-        }
 
-        this.prevStartIdx = index;
-
-        const start: number = index-1;
+        const start: number = index - 1;
         const end: number = index + Math.ceil(1002 / this._rowHeight);
 
         //Remove existing children
@@ -78,6 +71,9 @@ export class VirtualListControl {
 
         const app: HTMLDivElement = document.querySelector<HTMLDivElement>('#app')!;
         app.appendChild(this._rootElem);
+
+        const rowStartIdx: number = Math.floor(0 / this._rowHeight);;
+        this.drawRows(rowStartIdx);
 
     }
 }
