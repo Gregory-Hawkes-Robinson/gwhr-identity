@@ -1,33 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import "./VirtualListControl.scss";
 
-export function VirtualListControl(): JSX.Element {
+export interface IVirtualListControlProps {
+    items: number[];
+}
+
+export function VirtualListControl(props: IVirtualListControlProps): JSX.Element {
 
     const outerContainerRef = useRef<HTMLDivElement | null>(null);
-    const scrollSlugRef = useRef<HTMLDivElement | null>(null);
+    const scrollSlugRef = useRef<HTMLUListElement | null>(null);
 
     const itemRef = useRef<HTMLLIElement | null>(null); //👈 Modified type and initialized with "null"
 
-    const [items, setItems] = useState<number[]>([]);
     const [visibleItems, setVisibleItems] = useState<number[]>([]);
     const [itemHt, setItemHt] = useState<number>(0);
     const [viewportCapacity, setViewportCapacity] = useState<number>(0);
     const [itemVertOffset, setItemVertOffset] = useState<any>({ top: 0 });
     const [prevHiddenTilesCount, setPrevHiddenTilesCount] = useState<number>(0);
-
-
-    const populateItems = () => {
-        const tmp: number[] = [];
-        for (let i: number = 0; i < 300; i++) {
-            tmp.push(i);
-        }
-        setItems(tmp);
-    };
+    const [index, setIndex] = useState<number>(0);
 
     const initItemsContainerHeight = (): void => {
-        const height: number = itemHt * items.length;//innerContainerRef.current == null ? 1 : innerContainerRef.current.clientHeight;
-        scrollSlugRef.current!.style.height = `${height}px`;
-        console.log("inner container height:", height);
+        // const height: number = itemHt * items.length;//innerContainerRef.current == null ? 1 : innerContainerRef.current.clientHeight;
+        // scrollSlugRef.current!.style.height = `${height}px`;
+        // console.log("inner container height:", height);
     }
 
     const initItemHeight = (): number => {
@@ -63,13 +58,13 @@ export function VirtualListControl(): JSX.Element {
         }
         const startIdx: number = newHiddenTilesCount;
         const endIdx: number = startIdx + viewportCapacity;
-        const visItems: number[] = items.slice(startIdx, endIdx);
-        
+        // const visItems: number[] = items.slice(startIdx, endIdx);
+
         //setVisibleItems(visItems);
-        
+
         setPrevHiddenTilesCount(newHiddenTilesCount);
 
-        console.log("setVisibleItems startIdx =", startIdx, "endIdx = ", endIdx, "visItems:", visItems);
+        //console.log("setVisibleItems startIdx =", startIdx, "endIdx = ", endIdx, "visItems:", visItems);
     }
 
     //This causes the list to infinitely redraw.  Not good.
@@ -81,40 +76,54 @@ export function VirtualListControl(): JSX.Element {
     }
 
     const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-        console.log("ONSCROL!!!!");
-        const hiddenTilesCount: number = getHiddenTilesCount(e);
-        initVisibleTiles(hiddenTilesCount);
-        initTopPosition(e);
+        const scrollTop: number = e.currentTarget.scrollTop;
+        const rowHeight: number = 200;
+        let index = Math.floor(scrollTop / rowHeight);
+        setIndex(index);
+        console.log("scrollTop:", e.currentTarget.scrollTop, "index:", index);
     }
 
-    //Mount
-    useEffect(() => {
-        populateItems();
-    }, []);
+    const createRows = (): JSX.Element[] => {
+        console.log("createRows...");
+        const rowHeight: number = 200;
+        const start: number = index;
+        const end: number = index + 3;
+        const offSetBase = rowHeight * index;
+        //setItemVertOffset({ top: rowHeight * index });
+
+        const rows: JSX.Element[] = [];
+
+        console.log("rowHeight:", rowHeight, "start:", start, "end:", end, "offsetBase:", offSetBase);
+        if (props.items.length === 0) {
+            return [];
+        }
+        for (let i: number = start; i < end; i++) {
+            const top: number = offSetBase + i;
+            console.log("item:", props.items[i], "top:", top);
+            rows.push(<li className="item" key={props.items[i]} style={{ top: top }} >{props.items[i]}</li>);
+        }
+        return rows;
+    }
+
+
 
     useEffect(() => {
-        const height: number = initItemHeight();
-        initItemsContainerHeight();
-        initViewportCapacity(height);
-        setVisibleItems(items.slice(0, 6));
-
-    }, [items]);
+        //const height: number = initItemHeight();
+        // initItemsContainerHeight();
+        // initViewportCapacity(height);
+        // const result = props.items.slice(0, 4);
+        // console.log("setting visible items to:", result);
+        // setVisibleItems(props.items.slice(0, 4));
+    }, [props.items]);
 
     return (
         <>
             <div className="virtual-list-control" ref={outerContainerRef}
                 onScroll={onScroll}>
-                <div className="scroll-slug" ref={scrollSlugRef}>
-                    <ul className="items-container" style={itemVertOffset}>
-                        {visibleItems.map((item, idx) => {
-                            if (idx == 0) {
-                                return <li className="item" ref={itemRef} key={new Date().getTime()}>{item} </li>
-                            }
-                            return <li className="item" key={item}>{item}</li>
-                        })}
-                    </ul>
-                </div>
+                <ul className="items-container" ref={scrollSlugRef}>
+                    {createRows()}
+                </ul>
             </div>
         </>
-    ); 
+    );
 }

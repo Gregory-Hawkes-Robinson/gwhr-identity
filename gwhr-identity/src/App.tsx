@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.scss'
 import { Route, Routes } from 'react-router-dom'
 import { HomeView } from './View/Home/Home'
@@ -9,6 +9,20 @@ import { VirtualListControl } from './Components/VirtualList/VirtualListControl'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [items, setItems] = useState<number[]>([])
+
+  const populateItems = () => {
+    const tmp: number[] = [];
+    for (let i: number = 0; i < 300; i++) {
+      tmp.push(i);
+    }
+    setItems(tmp);
+  };
+
+  //Mount
+  useEffect(() => {
+    populateItems();
+  }, []);
 
   return (
     <>
@@ -22,7 +36,7 @@ function App() {
             </Route>
           </Route>
         </Routes> */}
-        <VirtualListControl></VirtualListControl>
+        <VirtualListControl items={items}></VirtualListControl>
       </div>
     </>
   )
