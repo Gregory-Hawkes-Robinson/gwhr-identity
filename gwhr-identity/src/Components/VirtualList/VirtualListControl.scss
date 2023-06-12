@@ -1,6 +1,6 @@
 .virtual-list-control {
     position: relative;
-    height: 400px;
+    height: 100%;
     background-color: beige;
     overflow-y: scroll;
     display: grid;
@@ -28,7 +28,6 @@
             align-items: end;
             position: absolute;
             width: 400px;
-            position: relative;
             height: 200px;
             background-color: aqua;
             margin: 2px;
