@@ -21,23 +21,15 @@ export class VirtualListControl {
             return;
         }
 
-        if (index == this._items.length) {
-            console.log("index == items count");
-            return;
-        }
-
-        if (index > this._items.length) {
-            console.log("index exceeds available items");
-            return;
-        }
-
-
         this.prevStartIdx = index;
 
-        const start: number = index;
+        const start: number = index-1;
         const end: number = index + Math.ceil(1002 / this._rowHeight);
 
         //Remove existing children
+        // while (this._scrollSlugElem!.childNodes.length > 1) {
+        //     this._scrollSlugElem!.removeChild(this._scrollSlugElem!.lastChild!);
+        // }
         this._scrollSlugElem!.innerHTML = "";
 
         for (let i: number = start; i <= end; i++) {
@@ -48,7 +40,7 @@ export class VirtualListControl {
             console.log("index:", i, "item:", this._items[i], "top:", top);
             const elem: HTMLLIElement = document.createElement("li");
             elem.className = "item";
-            elem.style.top = `${top}px`;
+            elem.style.top = `${top + 1}px`;
             elem.innerHTML = `${i}`;
 
             this._scrollSlugElem!.appendChild(elem);
@@ -72,6 +64,11 @@ export class VirtualListControl {
         this._rootElem = document.createElement("div");
         this._rootElem.className = "virtual-list-control";
         this._rootElem.onscroll = this.onScroll;
+
+        //Init the header
+        // const header: HTMLDivElement = document.createElement("div");
+        // header.className = "header";
+        // this._rootElem.appendChild(header);
 
         //Init the scroll slug
         this._scrollSlugElem = document.createElement("ul");
