@@ -1,29 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./VirtualListControl.scss";
 
-export interface IVirtualListControlProps {
-    items: number[];
+export interface IVirtualListControlProps<T> {
+    items: T[];
     rowHeight: number;
+    itemRenderer: (item: T) => JSX.Element;
 }
 
-export function VirtualListControl(props: IVirtualListControlProps): JSX.Element {
+export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.Element {
 
     const outerContainerRef = useRef<HTMLDivElement | null>(null);
     const scrollSlugRef = useRef<HTMLUListElement | null>(null);
+    const itemRef = useRef<HTMLLIElement | null>(null);
     const [index, setIndex] = useState<number>(0);
 
-    const getRowHeight = (): number => {
+    const rowHeight = useMemo(() => {
         return props.rowHeight;
-    }
-
-    const initScrollSlugHeight = () => {
-        const slugHeight: number = props.items.length * getRowHeight();
-        scrollSlugRef.current!.style.height = `${slugHeight}px`;
-    }
+    }, [index]);
 
     const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const scrollTop: number = e.currentTarget.scrollTop;
-        const rowHeight: number = getRowHeight();
         setIndex(Math.floor(scrollTop / rowHeight));
         console.log("scrollTop:", scrollTop, "rowHeight:", rowHeight, "index:", index);
     }
@@ -41,19 +37,20 @@ export function VirtualListControl(props: IVirtualListControlProps): JSX.Element
                 return rows;
             }
 
-            const top: number = (props.rowHeight * i);// - this._rowHeight;
-
-            rows.push(<li className="item" key={Math.random()} style={{ top: top }}>{props.items[i]}</li>);
-
+            const top: number = (props.rowHeight * i);
+            rows.push(<li className="item"
+                key={Math.random()}
+                style={{ top: top }}
+                ref={i === start ? itemRef : null}>{props.itemRenderer(props.items[i])}</li>);
         }
 
         return rows;
     }
 
-
-
     useEffect(() => {
-        initScrollSlugHeight();
+        //Init the slug height.  This creates the correctly sized scroll bar.
+        const slugHeight: number = props.items.length * rowHeight;
+        scrollSlugRef.current!.style.height = `${slugHeight}px`;
     }, [props.items]);
 
     return (

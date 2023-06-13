@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.scss'
-import { Route, Routes } from 'react-router-dom'
-import { HomeView } from './View/Home/Home'
-import { UsersView } from './View/Users/Users'
-import { UserView } from './View/User/User'
-import { UserDetails } from './View/UserDetails/UserDetails'
+
 import { VirtualListControl } from './Components/VirtualList/VirtualListControl'
 
 function App() {
@@ -27,16 +23,11 @@ function App() {
   return (
     <>
       <div id='app'>
-        {/* <Routes>
-          <Route path="/" element={<HomeView />}>
-            <Route path="users" element={<UsersView />}>
-              <Route path=':id' element={<UserView />}>
-                <Route path='details' element={<UserDetails />}></Route>
-              </Route>
-            </Route>
-          </Route>
-        </Routes> */}
-        <VirtualListControl items={items} rowHeight={200}></VirtualListControl>
+
+        <VirtualListControl items={items} rowHeight={201}
+          itemRenderer={(item: number) => {
+            return <span>{item}p</span>
+          }}></VirtualListControl>
       </div>
     </>
   )

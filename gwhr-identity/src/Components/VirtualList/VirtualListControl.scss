@@ -6,6 +6,7 @@
     display: grid;
     grid-template-columns: auto 1fr;
     overscroll-behavior: none;
+    padding-bottom: 25px;
 
     .items-container {
         padding: 0;
