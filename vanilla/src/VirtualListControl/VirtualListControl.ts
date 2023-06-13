@@ -24,32 +24,32 @@ export class VirtualListControl {
         // while (this._scrollSlugElem!.childNodes.length > 1) {
         //     this._scrollSlugElem!.removeChild(this._scrollSlugElem!.lastChild!);
         // }
+        //Remove existing children from scroll slug.  Let's not do this for recycling...
         this._scrollSlugElem!.innerHTML = "";
 
+       // let domElemIdx: number = 0;
         for (let i: number = start; i <= end; i++) {
             if (i >= this._items.length) {
                 return;
             }
-            const top: number = (this._rowHeight * i);// - this._rowHeight;
-            console.log("index:", i, "item:", this._items[i], "top:", top);
-            const elem: HTMLLIElement = document.createElement("li");
-            elem.className = "item";
-            elem.style.top = `${top + 1}px`;
-            elem.innerHTML = `${i}`;
-
-            this._scrollSlugElem!.appendChild(elem);
+            // if (this._scrollSlugElem!.children.length > 1) {
+            //     this._scrollSlugElem!.children[domElemIdx]!.innerHTML = i.toString();
+            //     //this._scrollSlugElem?.children[domElemIdx].appendChild(i); //= this.drawRow(i);
+            //     domElemIdx++;
+            // }
+            this._scrollSlugElem!.appendChild(this.drawRow(i));
         }
     }
 
     private drawRow = (index: number): HTMLLIElement => {
         const top: number = (this._rowHeight * index);// - this._rowHeight;
+        console.log("index:", index, "item:", this._items[index], "top:", top);
 
         const elem: HTMLLIElement = document.createElement("li");
         elem.className = "item";
         elem.style.top = `${top + 1}px`;
         elem.innerHTML = `${index}`;
 
-        this._scrollSlugElem!.appendChild(elem);
         return elem;
     }
 
@@ -81,7 +81,6 @@ export class VirtualListControl {
                         observer.disconnect();
                         this._isInit = true;
                     }
-
                 }
             }
         });
