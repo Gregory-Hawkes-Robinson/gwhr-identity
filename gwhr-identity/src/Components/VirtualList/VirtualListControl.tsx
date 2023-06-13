@@ -4,11 +4,11 @@ import "./VirtualListControl.scss";
 export interface IVirtualListItem<T> {
     key: string;
     content: T;
+    cachedElement: JSX.Element | undefined;
 }
 
 export interface IVirtualListControlProps<T> {
     items: T[];
-    rowHeight: number;
     itemRenderer: (item: T) => JSX.Element;
 }
 
@@ -19,14 +19,16 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
     const itemRef = useRef<HTMLLIElement | null>(null);
     const [index, setIndex] = useState<number>(0);
     const [items, setItems] = useState<IVirtualListItem<T>[]>([]);
+    const [isInitialized, setIsInitialized] = useState<boolean>(false);
+    const [rowHeight, setRowHeight] = useState(0);
 
-    const top = useMemo(() => {
-        return props.rowHeight * index;
-    }, [index]);
+    // const top = useMemo(() => {
+    //     return props.rowHeight * index;
+    // }, [index]);
 
-    const rowHeight = useMemo(() => {
-        return props.rowHeight;
-    }, [index]);
+    // const rowHeight = useMemo(() => {
+    //     return props.rowHeight;
+    // }, [index]);
 
     const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const scrollTop: number = e.currentTarget.scrollTop;
@@ -38,7 +40,7 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
         console.log("createRows... ,", "items:", items.length);
 
         const start: number = index - 1;
-        const end: number = index + Math.ceil(1002 / props.rowHeight) + 1;
+        const end: number = index + Math.ceil(1002 / rowHeight) + 1;
 
         const rows: JSX.Element[] = [];
 
@@ -51,15 +53,17 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
                 return rows;
             }
 
-            const top: number = (props.rowHeight * i);
+            const top: number = (rowHeight * i);
             if (items[i] == null) {
                 continue;
             }
 
+            items[i].cachedElement = props.itemRenderer(items[i].content);
+
             rows.push(<li className="item"
                 key={items[i].key}
                 style={{ top: top }}
-                ref={i === start ? itemRef : null}>{props.itemRenderer(items[i].content)}</li>);
+                ref={i === start ? itemRef : null}>{items[i].cachedElement}</li>);
         }
 
         return rows;
@@ -69,14 +73,35 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
         const queuedItems: IVirtualListItem<T>[] = [];
 
         props.items.forEach((item: T) => {
-            queuedItems.push({ key: Math.random().toString(), content: item });
+            queuedItems.push({ key: Math.random().toString(), content: item, cachedElement: undefined });
         });
 
         setItems(queuedItems);
 
+        if (scrollSlugRef.current != null) {
+            console.log("slug has ref");
+            const observer = new MutationObserver((mutationList: MutationRecord[], observer) => {
+                for (const mutation of mutationList) {
+                    if (mutation.type === "childList") {
+                        console.log("mutation:", mutation);
+                        if (mutation.addedNodes.length > 0) {
+                            const height: number = (mutation.addedNodes.item(0) as HTMLLIElement).offsetHeight!
+                            console.log("addedNode:", height);
+                            setRowHeight(height);
+                            const slugHeight: number = props.items.length * height;
+                            scrollSlugRef.current!.style.height = `${slugHeight}px`;
+                        }
+                    }
+                }
+            });
+
+            observer.observe(scrollSlugRef.current, { childList: true });
+        }
         //Init the slug height.  This creates the correctly sized scroll bar.
-        const slugHeight: number = items.length * rowHeight;
-        scrollSlugRef.current!.style.height = `${slugHeight}px`;
+        // const slugHeight: number = props.items.length * rowHeight;
+        // scrollSlugRef.current!.style.height = `${slugHeight}px`;
+        // setIsInitialized(true);
+
     }, [props.items]);
 
     return (
