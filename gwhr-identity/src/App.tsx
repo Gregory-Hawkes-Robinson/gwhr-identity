@@ -23,7 +23,6 @@ function App() {
   return (
     <>
       <div id='app'>
-
         <VirtualListControl items={items} rowHeight={201}
           itemRenderer={(item: number) => {
             return <span>{item}p</span>

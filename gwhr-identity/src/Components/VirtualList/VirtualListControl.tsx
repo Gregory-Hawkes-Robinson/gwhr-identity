@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./VirtualListControl.scss";
 
+export interface IVirtualListItem<T> {
+    key: string;
+    content: T;
+}
+
 export interface IVirtualListControlProps<T> {
     items: T[];
     rowHeight: number;
@@ -13,6 +18,11 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
     const scrollSlugRef = useRef<HTMLUListElement | null>(null);
     const itemRef = useRef<HTMLLIElement | null>(null);
     const [index, setIndex] = useState<number>(0);
+    const [items, setItems] = useState<IVirtualListItem<T>[]>([]);
+
+    const top = useMemo(() => {
+        return props.rowHeight * index;
+    }, [index]);
 
     const rowHeight = useMemo(() => {
         return props.rowHeight;
@@ -25,31 +35,47 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
     }
 
     const createRows = (index: number): JSX.Element[] => {
-        console.log("createRows...");
+        console.log("createRows... ,", "items:", items.length);
 
         const start: number = index - 1;
-        const end: number = index + Math.ceil(1002 / props.rowHeight);
+        const end: number = index + Math.ceil(1002 / props.rowHeight) + 1;
 
         const rows: JSX.Element[] = [];
 
+        if (items.length == 0) {
+            return rows;
+        }
+
         for (let i: number = start; i <= end; i++) {
-            if (i >= props.items.length) {
+            if (i >= items.length) {
                 return rows;
             }
 
             const top: number = (props.rowHeight * i);
+            if (items[i] == null) {
+                continue;
+            }
+
             rows.push(<li className="item"
-                key={Math.random()}
+                key={items[i].key}
                 style={{ top: top }}
-                ref={i === start ? itemRef : null}>{props.itemRenderer(props.items[i])}</li>);
+                ref={i === start ? itemRef : null}>{props.itemRenderer(items[i].content)}</li>);
         }
 
         return rows;
     }
 
     useEffect(() => {
+        const queuedItems: IVirtualListItem<T>[] = [];
+
+        props.items.forEach((item: T) => {
+            queuedItems.push({ key: Math.random().toString(), content: item });
+        });
+
+        setItems(queuedItems);
+
         //Init the slug height.  This creates the correctly sized scroll bar.
-        const slugHeight: number = props.items.length * rowHeight;
+        const slugHeight: number = items.length * rowHeight;
         scrollSlugRef.current!.style.height = `${slugHeight}px`;
     }, [props.items]);
 
