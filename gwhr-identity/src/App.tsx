@@ -9,7 +9,7 @@ function App() {
 
   const populateItems = () => {
     const tmp: number[] = [];
-    for (let i: number = 0; i < 300; i++) {
+    for (let i: number = 0; i < 5; i++) {
       tmp.push(i);
     }
     setItems(tmp);

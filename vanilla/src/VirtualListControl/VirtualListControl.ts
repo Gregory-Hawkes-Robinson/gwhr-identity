@@ -4,8 +4,9 @@ export class VirtualListControl {
     private _rootElem: HTMLDivElement | undefined = undefined;
     private _scrollSlugElem: HTMLUListElement | undefined = undefined;
 
-    private readonly _containerHeight: number = 1000;
-    private readonly _rowHeight: number = 200;
+    // private readonly _containerHeight: number = 1000;
+    private _rowHeight: number = 0;
+    private _isInit: boolean = false;
 
     private readonly _items: number[] = [];
 
@@ -37,9 +38,56 @@ export class VirtualListControl {
             elem.innerHTML = `${i}`;
 
             this._scrollSlugElem!.appendChild(elem);
-
         }
+    }
 
+    private drawRow = (index: number): HTMLLIElement => {
+        const top: number = (this._rowHeight * index);// - this._rowHeight;
+
+        const elem: HTMLLIElement = document.createElement("li");
+        elem.className = "item";
+        elem.style.top = `${top + 1}px`;
+        elem.innerHTML = `${index}`;
+
+        this._scrollSlugElem!.appendChild(elem);
+        return elem;
+    }
+
+
+
+    private initRowHeight = () => {
+
+        console.log("slug has ref");
+
+        const observer = new MutationObserver((mutationList: MutationRecord[], observer) => {
+            console.log("oberver callback...");
+            console.log("isInit:", this._isInit);
+
+
+            for (const mutation of mutationList) {
+                if (this._isInit) {
+                    console.log("Items height inited...");
+                    return;
+                }
+                if (mutation.type === "childList") {
+                    console.log("mutation:", mutation);
+                    if (mutation.addedNodes.length > 0) {
+                        const height: number = (mutation.addedNodes.item(0) as HTMLLIElement).offsetHeight!
+                        console.log("addedNode:", height);
+                        this._rowHeight = height;
+                        const slugHeight: number = this._items.length * height;
+                        this._scrollSlugElem!.style.height = `${slugHeight}px`;
+                        this.drawRows(0);
+                        observer.disconnect();
+                        this._isInit = true;
+                    }
+
+                }
+            }
+        });
+        observer.observe(this._scrollSlugElem!, { childList: true });
+
+        this._scrollSlugElem!.appendChild(this.drawRow(0));
     }
 
     private onScroll = (e: Event) => {
@@ -72,8 +120,10 @@ export class VirtualListControl {
         const app: HTMLDivElement = document.querySelector<HTMLDivElement>('#app')!;
         app.appendChild(this._rootElem);
 
-        const rowStartIdx: number = Math.floor(0 / this._rowHeight);;
-        this.drawRows(rowStartIdx);
+        this.initRowHeight();
+
+        //const rowStartIdx: number = Math.floor(0 / this._rowHeight);;
+        //this.drawRows(rowStartIdx);
 
     }
 }
