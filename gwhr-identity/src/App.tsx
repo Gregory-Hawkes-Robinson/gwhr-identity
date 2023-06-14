@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.scss'
 
 import { VirtualListControl } from './Components/VirtualList/VirtualListControl'
+import { ListControl } from './Components/List/ListControl'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -9,7 +10,7 @@ function App() {
 
   const populateItems = () => {
     const tmp: number[] = [];
-    for (let i: number = 0; i < 5; i++) {
+    for (let i: number = 0; i < 900; i++) {
       tmp.push(i);
     }
     setItems(tmp);
@@ -23,10 +24,10 @@ function App() {
   return (
     <>
       <div id='app'>
-        <VirtualListControl items={items}
-          itemRenderer={(item: number) => {
+        <ListControl items={items}
+          itemTemplate={(item: number) => {
             return <span>{item}p</span>
-          }}></VirtualListControl>
+          }}></ListControl>
       </div>
     </>
   )

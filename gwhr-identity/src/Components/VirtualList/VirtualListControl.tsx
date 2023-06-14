@@ -9,7 +9,7 @@ export interface IVirtualListItem<T> {
 
 export interface IVirtualListControlProps<T> {
     items: T[];
-    itemRenderer: (item: T) => JSX.Element;
+    itemTemplate: (item: T) => JSX.Element;
 }
 
 export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.Element {
@@ -58,7 +58,7 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
                 continue;
             }
 
-            items[i].cachedElement = props.itemRenderer(items[i].content);
+            items[i].cachedElement = props.itemTemplate(items[i].content);
 
             rows.push(<li className="item"
                 key={items[i].key}
@@ -78,18 +78,24 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
 
         setItems(queuedItems);
 
+        //Auto calculate the row height
         if (scrollSlugRef.current != null) {
             console.log("slug has ref");
             const observer = new MutationObserver((mutationList: MutationRecord[], observer) => {
                 for (const mutation of mutationList) {
+                    if (isInitialized) {
+                        return;
+                    }
                     if (mutation.type === "childList") {
                         console.log("mutation:", mutation);
                         if (mutation.addedNodes.length > 0) {
                             const height: number = (mutation.addedNodes.item(0) as HTMLLIElement).offsetHeight!
                             console.log("addedNode:", height);
                             setRowHeight(height);
+                            setIsInitialized(true);
                             const slugHeight: number = props.items.length * height;
                             scrollSlugRef.current!.style.height = `${slugHeight}px`;
+                            observer.disconnect();
                         }
                     }
                 }
@@ -97,11 +103,6 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
 
             observer.observe(scrollSlugRef.current, { childList: true });
         }
-        //Init the slug height.  This creates the correctly sized scroll bar.
-        // const slugHeight: number = props.items.length * rowHeight;
-        // scrollSlugRef.current!.style.height = `${slugHeight}px`;
-        // setIsInitialized(true);
-
     }, [props.items]);
 
     return (

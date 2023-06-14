@@ -27,17 +27,13 @@ export class VirtualListControl {
         //Remove existing children from scroll slug.  Let's not do this for recycling...
         this._scrollSlugElem!.innerHTML = "";
 
-       // let domElemIdx: number = 0;
         for (let i: number = start; i <= end; i++) {
             if (i >= this._items.length) {
                 return;
             }
-            // if (this._scrollSlugElem!.children.length > 1) {
-            //     this._scrollSlugElem!.children[domElemIdx]!.innerHTML = i.toString();
-            //     //this._scrollSlugElem?.children[domElemIdx].appendChild(i); //= this.drawRow(i);
-            //     domElemIdx++;
-            // }
+
             this._scrollSlugElem!.appendChild(this.drawRow(i));
+
         }
     }
 

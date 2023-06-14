@@ -3,26 +3,26 @@
     height: 100%;
     background-color: beige;
     overflow-y: scroll;
-    display: grid;
-    grid-template-columns: auto 1fr;
     overscroll-behavior: none;
-    padding-bottom: 25px;
 
     .items-container {
         padding: 0;
         margin: 0;
-        width: 400px;
+        width: 100%;
+        position: relative;
 
         .item {
             display: grid;
             align-items: end;
             position: absolute;
-            width: 400px;
-            height: 200px;
+            height: 50px;
+            width: 100%;
             background-color: aqua;
             margin: 2px;
             color: black;
             margin-bottom: 1px;
+            border-bottom: 1px solid black;
+            box-sizing: border-box;
         }
     }
 
