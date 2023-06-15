@@ -37,7 +37,7 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
     }
 
     const createRows = (index: number): JSX.Element[] => {
-        console.log("createRows... ,", "items:", items.length);
+        //console.log("createRows... ,", "items:", items.length);
 
         const start: number = index - 1;
         const end: number = index + Math.ceil(1002 / rowHeight) + 1;
@@ -80,14 +80,14 @@ export function VirtualListControl<T>(props: IVirtualListControlProps<T>): JSX.E
 
         //Auto calculate the row height
         if (scrollSlugRef.current != null) {
-            console.log("slug has ref");
+            // console.log("slug has ref");
             const observer = new MutationObserver((mutationList: MutationRecord[], observer) => {
                 for (const mutation of mutationList) {
                     if (isInitialized) {
                         return;
                     }
                     if (mutation.type === "childList") {
-                        console.log("mutation:", mutation);
+                        // console.log("mutation:", mutation);
                         if (mutation.addedNodes.length > 0) {
                             const height: number = (mutation.addedNodes.item(0) as HTMLLIElement).offsetHeight!
                             console.log("addedNode:", height);

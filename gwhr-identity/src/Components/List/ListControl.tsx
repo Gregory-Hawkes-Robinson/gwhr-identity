@@ -16,67 +16,107 @@ export function ListControl<T>(props: IListControlProps<T>): JSX.Element {
 
     const [isResizing, setIsResizing] = useState<boolean>(false);
     const [style, setStyle] = useState<any>(null);
-    const [targetX, setTargetX] = useState<number>(0);
+
+    const targetX = useRef<number>(-1);
+
+    const [isHovering, setIsHovering] = useState<boolean>(false);
 
     const onMouseOverHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        console.log("onMouseOverHandler...");
         const pointerX: number = e.clientX;
         const containerWidth: number = _rootElemRef.current!.offsetWidth;
         const lowerBound: number = containerWidth - _borderSize;
         const upperBound: number = containerWidth;
 
-        if (pointerX >= lowerBound && pointerX <= upperBound) {
-            //setStyle({})
-        } else {
+        console.log("lowerBound:", lowerBound, "pointerX", pointerX, "upperBound", upperBound);
 
+        if (pointerX >= lowerBound && pointerX <= upperBound) {
+            console.log("Over target area");
+            setIsHovering(true);
+        } else {
+            console.log("outside target area");
+            setIsHovering(false);
         }
     }
 
-    const onMouseUp = () => {
+
+    const getMoveDirection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): number => {
+        const pointerX: number = e.clientX;
+        if (targetX.current == pointerX) {
+            return 0;
+        }
+        const dir: number = pointerX - targetX.current!;
+        let value = 0;
+
+        if (dir > 0) {
+            //console.log("moving right", dir);
+            value = 1
+        }
+        else {
+            //console.log("moving left", dir);
+            value = -1;
+        }
+
+        targetX.current = pointerX;
+        return value;
+    }
+
+    const isInTargetZone = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): boolean => {
+        const pointerX: number = e.clientX;
+        const containerWidth: number = _rootElemRef.current!.offsetWidth;
+        const lowerBound: number = containerWidth - _borderSize;
+
+        if (pointerX < lowerBound) {
+            console.log("outside target area");
+            if (isHovering) {
+                setIsHovering(false);
+                return false;
+            }
+        }
+        console.log("inside target area");
+        setIsHovering(true);
+        return true
+    }
+
+    const onMouseDownHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const pointerX: number = e.clientX;
+        if (isInTargetZone(e)) {
+            console.log("in target zone");
+            setIsResizing(true);
+        }
+        console.log("NOT in target zone");
+    }
+
+    const onMouseLeaveHandler = () => {
+        console.log("mouse left");
         setIsResizing(false);
     }
 
-    const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const pointerX: number = e.clientX;
-        const containerWidth: number = _rootElemRef.current!.offsetWidth;
-        const lowerBound: number = containerWidth - _borderSize;
-        const upperBound: number = containerWidth;
-        console.log("pointerX: ", pointerX, "lowerbound: ", lowerBound, "upperbound: ", upperBound);
-        if (pointerX >= lowerBound && pointerX <= upperBound) {
-            console.log("Pointer in resize zone");
-            setTargetX(pointerX);
-            setIsResizing(true);
-            // _rootElemRef.current!.style.cursor = "col-resize";
-        }
+    const onMouseUpHandler = () => {
+        setIsResizing(false);
     }
 
+
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-        if (!isResizing) {
-            return;
-        }
+        //console.log("onMouseMove...");
+        isInTargetZone(e);
+        const target = e.target as HTMLElement;
+        console.log(target);
+        console.log(target.attributes);
 
-        console.log("onMouseMove... e.clientX:", e.clientX, "target width:", _rootElemRef.current!.offsetWidth, "isresizing:", isResizing, "button:", e.button);
         const pointerX: number = e.clientX;
-        const containerWidth: number = _rootElemRef.current!.offsetWidth;
-
-        const delta: number = containerWidth - pointerX;
-        if (targetX - pointerX > 1) {
-            console.log("shrink");
+        if (isResizing) {
+            setStyle({ width: `${pointerX}px` });
         }
-        else {
-            console.log("expand");
-        }
-        const newWidth: string = `${containerWidth - delta}px`;
-
-        console.log("pointerX: ", pointerX, "containerWidth:", containerWidth, "delta: ", delta);
-
-        //setStyle({ width: pointerX });
-        //_rootElemRef.current!.style.width = `${delta}px`;
-
     }
 
     return (
-        <div className={`gh-list-control ${isResizing ? "is-resizing" : ""}`}
-            ref={_rootElemRef} style={style} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onMouseMove={onMouseMove} onMouseOut={onMouseUp}>
+        <div className={`gh-list-control ${isHovering ? "is-hovering" : ""}`}
+            ref={_rootElemRef} style={style}
+            onMouseMove={onMouseMove}
+            onMouseDown={onMouseDownHandler}
+            onMouseUp={onMouseUpHandler}
+            onMouseLeave={onMouseLeaveHandler}>
             <VirtualListControl items={props.items} itemTemplate={props.itemTemplate}></VirtualListControl>
         </div>
     );
