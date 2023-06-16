@@ -11,7 +11,7 @@ We need to record the previous coordinate of the pointer and compare to the curr
 previous, we are expanding, otherwise, we are shrinking.
  */
 export function ListControl<T>(props: IListControlProps<T>): JSX.Element {
-    const _borderSize: number = 40;
+    const _borderSize: number = 8;
     const _rootElemRef = useRef<HTMLDivElement | null>(null);
 
     const [isResizing, setIsResizing] = useState<boolean>(false);
@@ -20,25 +20,6 @@ export function ListControl<T>(props: IListControlProps<T>): JSX.Element {
     const targetX = useRef<number>(-1);
 
     const [isHovering, setIsHovering] = useState<boolean>(false);
-
-    const onMouseOverHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        console.log("onMouseOverHandler...");
-        const pointerX: number = e.clientX;
-        const containerWidth: number = _rootElemRef.current!.offsetWidth;
-        const lowerBound: number = containerWidth - _borderSize;
-        const upperBound: number = containerWidth;
-
-        console.log("lowerBound:", lowerBound, "pointerX", pointerX, "upperBound", upperBound);
-
-        if (pointerX >= lowerBound && pointerX <= upperBound) {
-            console.log("Over target area");
-            setIsHovering(true);
-        } else {
-            console.log("outside target area");
-            setIsHovering(false);
-        }
-    }
-
 
     const getMoveDirection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): number => {
         const pointerX: number = e.clientX;
@@ -66,16 +47,23 @@ export function ListControl<T>(props: IListControlProps<T>): JSX.Element {
         const containerWidth: number = _rootElemRef.current!.offsetWidth;
         const lowerBound: number = containerWidth - _borderSize;
 
-        if (pointerX < lowerBound) {
-            console.log("outside target area");
-            if (isHovering) {
-                setIsHovering(false);
-                return false;
+        // if (getMoveDirection(e) == 0) {
+        //     return false;
+        // }
+
+        if (pointerX > lowerBound) {
+            console.log("inside target area x");
+            if (!isHovering) {
+                setIsHovering(true);
             }
+            return true;
         }
-        console.log("inside target area");
-        setIsHovering(true);
-        return true
+        else {
+            console.log("outside target area");
+            setIsHovering(false);
+        }
+
+        return false
     }
 
     const onMouseDownHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -83,30 +71,28 @@ export function ListControl<T>(props: IListControlProps<T>): JSX.Element {
         if (isInTargetZone(e)) {
             console.log("in target zone");
             setIsResizing(true);
+            return;
         }
         console.log("NOT in target zone");
     }
 
-    const onMouseLeaveHandler = () => {
-        console.log("mouse left");
-        setIsResizing(false);
-    }
-
     const onMouseUpHandler = () => {
         setIsResizing(false);
+        setIsHovering(false);
     }
 
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
         //console.log("onMouseMove...");
-        isInTargetZone(e);
-        const target = e.target as HTMLElement;
-        console.log(target);
-        console.log(target.attributes);
+        const tz = isInTargetZone(e);
+        console.log("tz:", tz);
+        // const target = e.target as HTMLElement;
+        // console.log(target);
+        // console.log(target.attributes);
 
         const pointerX: number = e.clientX;
         if (isResizing) {
-            setStyle({ width: `${pointerX}px` });
+            setStyle({ width: `${pointerX + 5}px` });
         }
     }
 
@@ -116,7 +102,7 @@ export function ListControl<T>(props: IListControlProps<T>): JSX.Element {
             onMouseMove={onMouseMove}
             onMouseDown={onMouseDownHandler}
             onMouseUp={onMouseUpHandler}
-            onMouseLeave={onMouseLeaveHandler}>
+            onMouseLeave={onMouseUpHandler}>
             <VirtualListControl items={props.items} itemTemplate={props.itemTemplate}></VirtualListControl>
         </div>
     );
